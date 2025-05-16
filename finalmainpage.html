@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <style>
+        :root {
+            --primary: #2A2F4F;
+            --secondary: #917FB3;
+            --accent: #E5BEEC;
+            --light: #FDE2F3;
+            --winner: #4CAF50;
+            --loser: #F44336;
+            --tie: #2196F3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .heading {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--light);
+            text-shadow: 0 0 10px rgba(229, 190, 236, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .score-board {
+            background-color: var(--secondary);
+            border-radius: 1rem;
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 3rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .score {
+            text-align: center;
+        }
+
+        .score h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .score p {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .lifetime-score {
+            background-color: var(--secondary);
+            border-radius: 1rem;
+            padding: 1rem 2rem;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .lifetime-score h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .lifetime-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .stat {
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .reset-stats {
+            background-color: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin-top: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-stats:hover {
+            background-color: var(--light);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .ques {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .option button {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: none;
+            background-color: var(--secondary);
+            color: var(--light);
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .option button:hover {
+            transform: translateY(-10px);
+            background-color: var(--accent);
+            color: var(--primary);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .option button:active {
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-container {
+            background-color: var(--secondary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .battle {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+
+        .player-choice, .system-choice {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .choice-icon {
+            font-size: 3.5rem;
+            background-color: var(--accent);
+            color: var(--primary);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vs {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .answer {
+            font-size: 1.2rem;
+            color: var(--light);
+            margin-bottom: 1rem;
+        }
+
+        .outcome {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            display: inline-block;
+        }
+
+        .win {
+            background-color: var(--winner);
+        }
+
+        .lose {
+            background-color: var(--loser);
+        }
+
+        .tie {
+            background-color: var(--tie);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .nav {
+            margin-bottom: 1rem;
+        }
+
+        .nav a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: var(--light);
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .heading {
+                font-size: 2.5rem;
+            }
+
+            .options {
+                gap: 1rem;
+            }
+
+            .option button {
+                width: 100px;
+                height: 100px;
+            }
+
+            .battle {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .vs {
+                margin: 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="http://127.0.0.1:3000/index.html">← Back to Home</a>
+        </div>
+        
+        <h1 class="heading">Rock Paper Scissors</h1>
+
+        <div class="score-board">
+            <div class="score">
+                <h3>You</h3>
+                <p id="player-score">0</p>
+            </div>
+            <div class="score">
+                <h3>System</h3>
+                <p id="system-score">0</p>
+            </div>
+        </div>
+
+        <div class="lifetime-score">
+            <h3>Lifetime Statistics</h3>
+            <div class="lifetime-stats">
+                <div class="stat">
+                    <div class="stat-value" id="lifetime-wins">0</div>
+                    <div class="stat-label">Wins</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="lifetime-losses">0</div>
+                    <div class="stat-label">Losses</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="lifetime-ties">0</div>
+                    <div class="stat-label">Ties</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="win-percentage">0%</div>
+                    <div class="stat-label">Win Rate</div>
+                </div>
+            </div>
+            <button class="reset-stats" id="reset-stats">Reset Lifetime Stats</button>
+        </div>
+
+        <div class="ques">
+            <h3>Choose your move:</h3>
+        </div>
+
+        <div class="options">
+            <div class="option o1">
+                <button onclick="myFunc1()">
+                    <span class="icon">✊</span>
+                    Rock
+                </button>
+            </div>
+            <div class="option o2">
+                <button onclick="myFunc2()">
+                    <span class="icon">✋</span>
+                    Paper
+                </button>
+            </div>
+            <div class="option o3">
+                <button onclick="myFunc3()">
+                    <span class="icon">✌️</span>
+                    Scissors
+                </button>
+            </div>
+        </div>
+
+        <div class="result-container hidden" id="result-container">
+            <div class="battle">
+                <div class="player-choice">
+                    <p>Your Choice</p>
+                    <div class="choice-icon" id="player-choice-icon">✊</div>
+                </div>
+                <div class="vs">VS</div>
+                <div class="system-choice">
+                    <p>System's Choice</p>
+                    <div class="choice-icon" id="system-choice-icon">✋</div>
+                </div>
+            </div>
+            <div class="answer">
+                <h3 id="system-outcome">System's Outcome: Waiting...</h3>
+            </div>
+            <div class="outcome" id="outcome">Waiting for System's Outcome.....</div>
+        </div>
+    </div>
+
+    <script>
+        let playerScore = 0;
+        let systemScore = 0;
+        let lifetimeWins = 0;
+        let lifetimeLosses = 0;
+        let lifetimeTies = 0;
+        
+        const playerScoreElement = document.getElementById('player-score');
+        const systemScoreElement = document.getElementById('system-score');
+        const resultContainer = document.getElementById('result-container');
+        const playerChoiceIcon = document.getElementById('player-choice-icon');
+        const systemChoiceIcon = document.getElementById('system-choice-icon');
+        const outcomeElement = document.getElementById('outcome');
+        
+        const lifetimeWinsElement = document.getElementById('lifetime-wins');
+        const lifetimeLossesElement = document.getElementById('lifetime-losses');
+        const lifetimeTiesElement = document.getElementById('lifetime-ties');
+        const winPercentageElement = document.getElementById('win-percentage');
+        const resetStatsButton = document.getElementById('reset-stats');
+
+        function loadLifetimeStats() {
+            lifetimeWins = parseInt(localStorage.getItem('rps-lifetime-wins') || '0');
+            lifetimeLosses = parseInt(localStorage.getItem('rps-lifetime-losses') || '0');
+            lifetimeTies = parseInt(localStorage.getItem('rps-lifetime-ties') || '0');
+            
+            updateLifetimeStatsDisplay();
+        }
+
+        function saveLifetimeStats() {
+            localStorage.setItem('rps-lifetime-wins', lifetimeWins.toString());
+            localStorage.setItem('rps-lifetime-losses', lifetimeLosses.toString());
+            localStorage.setItem('rps-lifetime-ties', lifetimeTies.toString());
+        }
+
+        function updateLifetimeStatsDisplay() {
+            lifetimeWinsElement.textContent = lifetimeWins;
+            lifetimeLossesElement.textContent = lifetimeLosses;
+            lifetimeTiesElement.textContent = lifetimeTies;
+            
+            const totalGames = lifetimeWins + lifetimeLosses + lifetimeTies;
+            const winPercentage = totalGames > 0 ? Math.round((lifetimeWins / totalGames) * 100) : 0;
+            winPercentageElement.textContent = `${winPercentage}%`;
+        }
+
+        function resetLifetimeStats() {
+            if (confirm('Are you sure you want to reset your lifetime statistics?')) {
+                lifetimeWins = 0;
+                lifetimeLosses = 0;
+                lifetimeTies = 0;
+                saveLifetimeStats();
+                updateLifetimeStatsDisplay();
+            }
+        }
+
+        loadLifetimeStats();
+
+        resetStatsButton.addEventListener('click', resetLifetimeStats);
+
+        function updateScores(result) {
+            if (result === "win") {
+                playerScore++;
+                lifetimeWins++;
+                playerScoreElement.textContent = playerScore;
+            } else if (result === "lose") {
+                systemScore++;
+                lifetimeLosses++;
+                systemScoreElement.textContent = systemScore;
+            } else if (result === "tie") {
+                lifetimeTies++;
+            }
+            
+            saveLifetimeStats();
+            updateLifetimeStatsDisplay();
+        }
+
+        function showResult(playerChoice, systemChoice, result, message) {
+            resultContainer.classList.remove('hidden');
+            
+            if (playerChoice === "Rock") {
+                playerChoiceIcon.textContent = "✊";
+            } else if (playerChoice === "Paper") {
+                playerChoiceIcon.textContent = "✋";
+            } else {
+                playerChoiceIcon.textContent = "✌️";
+            }
+            
+            if (systemChoice === "Rock") {
+                systemChoiceIcon.textContent = "✊";
+            } else if (systemChoice === "Paper") {
+                systemChoiceIcon.textContent = "✋";
+            } else {
+                systemChoiceIcon.textContent = "✌️";
+            }
+            
+            outcomeElement.className = "outcome";
+            if (result === "win") {
+                outcomeElement.classList.add("win");
+            } else if (result === "lose") {
+                outcomeElement.classList.add("lose");
+            } else {
+                outcomeElement.classList.add("tie");
+            }
+            
+            outcomeElement.textContent = message;
+            document.getElementById('system-outcome').textContent = `System's Outcome: ${systemChoice}`;
+        }
+
+        function myFunc1(){
+            const strings = ["Rock", "Paper", "Scissors"];
+            const randomString = strings[Math.floor(Math.random()*strings.length)];
+            
+            let result = "";
+            let message = "";
+            
+            if(randomString == "Rock"){
+                result = "tie";
+                message = "You and system gave the same outcome, it's a tie";
+            }
+            else if(randomString == "Paper"){
+                result = "lose";
+                message = "You LOST";
+            }
+            else if(randomString == "Scissors"){
+                result = "win";
+                message = "You WIN";
+            }
+            
+            updateScores(result);
+            showResult("Rock", randomString, result, message);
+        }
+
+        function myFunc2(){
+            const strings = ["Rock", "Paper", "Scissors"];
+            const randomString = strings[Math.floor(Math.random()*strings.length)];
+            
+            let result = "";
+            let message = "";
+            
+            if(randomString == "Rock"){
+                result = "win";
+                message = "You WIN";
+            }
+            else if(randomString == "Paper"){
+                result = "tie";
+                message = "You and system gave the same outcome, it's a tie";
+            }
+            else if(randomString == "Scissors"){
+                result = "lose";
+                message = "You LOST";
+            }
+            
+            updateScores(result);
+            showResult("Paper", randomString, result, message);
+        }
+
+        function myFunc3(){
+            const strings = ["Rock", "Paper", "Scissors"];
+            const randomString = strings[Math.floor(Math.random()*strings.length)];
+            
+            let result = "";
+            let message = "";
+            
+            if(randomString == "Rock"){
+                result = "lose";
+                message = "You LOST";
+            }
+            else if(randomString == "Paper"){
+                result = "win";
+                message = "You WIN";
+            }
+            else if(randomString == "Scissors"){
+                result = "tie";
+                message = "You and system gave the same outcome, it's a tie";
+            }
+            
+            updateScores(result);
+            showResult("Scissors", randomString, result, message);
+        }
+    </script>
+</body>
+</html>
+
+<!--
+<!--
+ROCK PAPER SCISSORS GAME 
+DEVELOPED BY : HITANSHU GOYAL
+GITHUB: https://github.com/hitxnshu
+LINKEDIN : https://www.linkedin.com/in/hitanshu-goyal-034860324/
+-->

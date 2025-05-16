@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors - Home</title>
+    <style>
+        :root {
+            --primary: #2A2F4F;
+            --secondary: #917FB3;
+            --accent: #E5BEEC;
+            --light: #FDE2F3;
+            --winner: #4CAF50;
+            --loser: #F44336;
+            --tie: #2196F3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .heading {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--light);
+            text-shadow: 0 0 10px rgba(229, 190, 236, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .nav {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background-color: var(--secondary);
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-item a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .nav-item a:hover {
+            background-color: var(--accent);
+            color: var(--primary);
+        }
+
+        .active {
+            background-color: var(--accent);
+            color: var(--primary) !important;
+            border-radius: 0.5rem;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .hero-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .hero-icon {
+            font-size: 3.5rem;
+            background-color: var(--secondary);
+            color: var(--light);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: float 3s infinite ease-in-out;
+        }
+
+        .hero-icon:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .hero-icon:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .hero-text {
+            font-size: 1.2rem;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background-color: var(--accent);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 2rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        .cta-button a{
+            text-decoration: none;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .feature {
+            background-color: var(--secondary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .feature h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            font-size: 1rem;
+            color: var(--light);
+            line-height: 1.5;
+        }
+
+        .rules {
+            background-color: var(--secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .rules h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .rule {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem;
+            background-color: var(--primary);
+            border-radius: 0.5rem;
+        }
+
+        .rule-icon {
+            font-size: 1.8rem;
+            background-color: var(--accent);
+            color: var(--primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .rule-text {
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .footer {
+            margin-top: 3rem;
+            text-align: center;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--secondary);
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer p {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .heading {
+                font-size: 2.5rem;
+            }
+
+            .nav-list {
+                gap: 1rem;
+            }
+
+            .hero-icons {
+                flex-wrap: wrap;
+            }
+
+            .hero-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 2.5rem;
+            }
+
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="heading">Rock Paper Scissors</h1>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="http://127.0.0.1:3000/index.html" class="active">Home</a></li>
+                <li class="nav-item"><a href="http://127.0.0.1:3000/finalmainpage.html">Play Now</a></li>
+                <li class="nav-item"><a href="#rules">Rules</a></li>
+                <li class="nav-item"><a href="#about">About</a></li>
+            </ul>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-icons">
+                <div class="hero-icon">✊</div>
+                <div class="hero-icon">✋</div>
+                <div class="hero-icon">✌️</div>
+            </div>
+            <div class="hero-text">
+                <p>Welcome to the ultimate Rock Paper Scissors experience! Test your luck and strategy in this classic game. Challenge the system and see if you can achieve a winning streak. Are you ready to make your move?</p>
+            </div>
+            <a href="game.html">
+                <button class="cta-button"><a href = "http://127.0.0.1:3000/finalmainpage.html">Play Now!</a></button>
+            </a>
+        </section>
+
+        <section class="features">
+            <div class="feature">
+                <div class="feature-icon">🎮</div>
+                <h3>Simple Gameplay</h3>
+                <p>Easy to learn, fun to master. Make your move with just one click and see the results instantly.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🏆</div>
+                <h3>Score Tracking</h3>
+                <p>Keep track of your wins and losses with our built-in scoring system. How many victories can you stack up?</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📱</div>
+                <h3>Mobile Friendly</h3>
+                <p>Play on any device! Our responsive design ensures a great experience on desktop, tablet, or mobile.</p>
+            </div>
+        </section>
+
+        <section class="rules" id="rules">
+            <h2>Game Rules</h2>
+            <div class="rules-grid">
+                <div class="rule">
+                    <div class="rule-icon">✊</div>
+                    <div class="rule-text">
+                        <strong>Rock crushes Scissors</strong> - Rock wins against Scissors but loses to Paper.
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-icon">✋</div>
+                    <div class="rule-text">
+                        <strong>Paper covers Rock</strong> - Paper wins against Rock but loses to Scissors.
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-icon">✌️</div>
+                    <div class="rule-text">
+                        <strong>Scissors cuts Paper</strong> - Scissors wins against Paper but loses to Rock.
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-icon">🔄</div>
+                    <div class="rule-text">
+                        <strong>Same moves tie</strong> - If both you and the system choose the same move, it's a tie!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about" id="about">
+            <div class="feature">
+                <div class="feature-icon">ℹ️</div>
+                <h3>About This Game</h3>
+                <p>Rock Paper Scissors is one of the world's oldest and most popular hand games, played by people of all ages. This digital version brings the classic game to your screen with a modern, colorful interface and smooth gameplay. Have fun playing!</p>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2025 Rock Paper Scissors Game. All rights reserved.</p>
+            <p><a href="game.html">Play the Game</a> | <a href="#rules">Read the Rules</a></p>
+            <p>Made with ❤️ by hitxnshu</p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+<!--
+ROCK PAPER SCISSORS GAME 
+DEVELOPED BY : HITANSHU GOYAL
+GITHUB: https://github.com/hitxnshu
+LINKEDIN : https://www.linkedin.com/in/hitanshu-goyal-034860324/
+-->
